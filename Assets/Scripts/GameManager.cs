@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("start");
-
     }
 
     // Update is called once per frame
