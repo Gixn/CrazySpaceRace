@@ -6,8 +6,8 @@ using System.Net;
 using System.Text;
 
 public class GameLogic : MonoBehaviour {
-    public GameObject collectiblePrefab;
-
+    public GameObject collectibleWallPrefab;
+    public GameObject collectibleBoostPrefab;
     public GameObject gameWorld;
 
     // Use this for initialization
@@ -21,22 +21,38 @@ public class GameLogic : MonoBehaviour {
             return;
         }
 
-        var collectible = FindObjectOfType<CollectibleLogic>();
+        var collectibleWall = FindObjectOfType<CollectibleWall>();
 
         //spawn collectible at random X/Z pos if none exists
-        if (collectible == null) {
+        if (collectibleWall == null) {
             float maxPos = 7.5f;
             float yPos = -5;
-            collectible = (Instantiate(
-                collectiblePrefab, //template
+            collectibleWall = (Instantiate(
+                collectibleWallPrefab, //template
                 new Vector3( //position
                     Random.Range(-maxPos, maxPos), yPos,
                     Random.Range(-maxPos, maxPos)),
                 Quaternion.identity, //rotation
                 gameWorld.transform //parent
-            ) as GameObject).GetComponent<CollectibleLogic>();
+            ) as GameObject).GetComponent<CollectibleWall>();
 
-            NetworkServer.Spawn(collectible.gameObject);
+            NetworkServer.Spawn(collectibleWall.gameObject);
+        }
+        
+        var collectibleBoost = FindObjectOfType<CollectibleBoost>();
+        if (collectibleBoost == null) {
+            float maxPos = 7.5f;
+            float yPos = -5;
+            collectibleBoost = (Instantiate(
+                collectibleBoostPrefab, //template
+                new Vector3( //position
+                    Random.Range(-maxPos, maxPos), yPos,
+                    Random.Range(-maxPos, maxPos)),
+                Quaternion.identity, //rotation
+                gameWorld.transform //parent
+            ) as GameObject).GetComponent<CollectibleBoost>();
+
+            NetworkServer.Spawn(collectibleBoost.gameObject);
         }
     }
 }

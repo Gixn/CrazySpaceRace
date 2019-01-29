@@ -8,16 +8,16 @@ public class PlayerLogic : NetworkBehaviour {
 
     //synchronize points from server to all clients
     [SyncVar]
-    private int points;
+    private int playerOffset;
 
     [SyncVar]
     private Color color;
 
     //public accessor
-    public int Points
+    public int PlayerOffset
     {
-        get { return points; }
-        set { points = value; }
+        get { return playerOffset; }
+        set { playerOffset = value; }
     }
 
 	// Use this for initialization
@@ -36,15 +36,13 @@ public class PlayerLogic : NetworkBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update ()
-    {
+	void Update () {
         GetComponent<Renderer>().material.color = this.color;
 
         var isLocal = isLocalPlayer;
         
         //only control local player object
-        if (isLocal)
-        {
+        if (isLocal) {
             control();
 
             //attach main camera to local player and a few units back (3rd person view)
@@ -52,12 +50,11 @@ public class PlayerLogic : NetworkBehaviour {
             Camera.main.transform.localPosition = Vector3.forward * -2;
             Camera.main.transform.localRotation = Quaternion.identity;
         }
-
-        GetComponentInChildren<TextMesh>().text = System.Convert.ToString(points);
+        
+        
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         //make camera global again instead of following player
 
         var camera = GetComponentInChildren<Camera>();
@@ -89,16 +86,32 @@ public class PlayerLogic : NetworkBehaviour {
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
 
-            CmdResetPoints();
+            CmdResetPlayerOffset();
         }
     }
 
+    public void actionWall() {
+        playerOffset -= 2;
+        var networkTransform = GetComponent<NetworkTransform>().transform;
+        var vec = networkTransform.position;
+        vec.z += 2;
+        networkTransform.position = vec;
+    }
+    
+    public void actionBoost() {
+        playerOffset += 2;
+        var networkTransform = GetComponent<NetworkTransform>().transform;
+        var vec = networkTransform.position;
+        vec.z += 2;
+        networkTransform.position = vec;
+    }
+
     [Command]
-    public void CmdResetPoints()
+    public void CmdResetPlayerOffset()
     {
         if(NetworkServer.active)
         {
-            points = 0;
+            playerOffset = 0;
         }
     }
 }
