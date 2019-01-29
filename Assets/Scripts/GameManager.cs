@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
 
         //TODO: fix speed
         //nodes are unevenly distributed which results in different speeds
-        //solution could be to evenly distribute them somehow but this disturbs the index position
-        //or to skip a dynamic amount of nodes depending on the distance
-        //or????
+        //solution could be to use the angle*multiplier for the position calculation
+        //for the straight use the circumference depending on the radius as reference
+        //and to skip a increasing/decreasing amount of nodes
 
         player.transform.position = map.getNode().transform.position;
         player.transform.rotation = map.getNode().transform.rotation;
