@@ -1,21 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject player;
 
-
-    private MapGenerator mapGenerator=new MapGenerator(20);
+    private MapGenerator mapGenerator;
+    private int index = 0;
     void Start()
     {
-        Debug.Log("start");
+        player = Instantiate(player);
+        mapGenerator = new MapGenerator(100);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("update");
+        if (index<mapGenerator.Nodes.Count)
+        {
+            player.transform.position = mapGenerator.Nodes[index].transform.position;
+            player.transform.rotation = mapGenerator.Nodes[index].transform.rotation;
+        
+            index += 1;
+        }
     }
 }

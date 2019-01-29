@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
@@ -7,14 +8,14 @@ public class MapGenerator
     public float InnerOffset { get; set; } = 0.05f;
     public float OuterOffset { get; set; } = 0.15f;
     public float LineWidth { get;set;  } = 0.01f;
-    public int Points { get; set; } = 50;
+    public int Points { get; set; } = 100;
     public int MinAngle { get;set;  } = 30;
     public int MaxAngle { get;set;  } = 90;
     public int MinLen { get; set; } = 30;
     public int MaxLen { get; set; } = 100;
 
     private const int Radius = 1;
-    private List<Segment> segments=new List<Segment>();
+    public List<GameObject> Nodes=new List<GameObject>();
 
     public MapGenerator(int segmentCount=20)
     {
@@ -24,16 +25,19 @@ public class MapGenerator
     public void GenerateSegments(int count)
     {
         Segment previous = GenerateSegment();
-        segments.Add(previous);
-
+        Nodes.AddRange(previous.Vertices);
+    
+        
         for (int i = 0; i < count; i++)
         {
             var segment = GenerateSegment();
-            segments.Add(segment);
             previous.Append(segment);
+            Nodes.AddRange(segment.Vertices);
             previous = segment;
         }
     }
+
+ 
 
     private Segment GenerateSegment(int type=-1)
     {
