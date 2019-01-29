@@ -14,33 +14,25 @@ public class MapGenerator
     public int MaxLen { get; set; } = 100;
 
     private const int Radius = 1;
-    private List<Segment> _segments=new List<Segment>();
+    private List<Segment> segments=new List<Segment>();
 
-    public MapGenerator(int segmentCount=2)
+    public MapGenerator(int segmentCount=20)
     {
-
+        GenerateSegments(segmentCount);
     }
 
-    public void GenerateSegments()
+    public void GenerateSegments(int count)
     {
-
-//        var center = GameObject.CreatePrimitive(PrimitiveType.Cube);
-//        center.transform.localScale=new Vector3(0.05f,0.05f,0.05f);
-
         Segment previous = GenerateSegment();
+        segments.Add(previous);
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < count; i++)
         {
             var segment = GenerateSegment();
+            segments.Add(segment);
             previous.Append(segment);
             previous = segment;
         }
-
-//        GenerateSegment(0);
-//        GenerateSegment(1);
-//        GenerateSegment(2);
-//        GenerateSegment(3);
-//        GenerateSegment(4);
     }
 
     private Segment GenerateSegment(int type=-1)

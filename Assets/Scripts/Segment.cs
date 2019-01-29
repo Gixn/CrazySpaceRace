@@ -13,14 +13,8 @@ public class Segment
         segment.GameObject.transform.rotation = last.transform.rotation;
     }
 
-    public void Prepend(Segment segment)
-    {
-
-    }
-
     public void AddVertex(Vector3 pos, Vector3 rot)
     {
-//        var vertex=GameObject.CreatePrimitive(PrimitiveType.Cube);
         var vertex=new GameObject();
         vertex.transform.localScale=new Vector3(0.05f,0.05f,0.05f);
         vertex.transform.localPosition = pos;

@@ -7,15 +7,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
 
 
-    private MapGenerator mapGenerator=new MapGenerator();
+    private MapGenerator mapGenerator=new MapGenerator(20);
     void Start()
     {
-
-        mapGenerator.GenerateSegments();
-        //segment.ForEach(s=>Instantiate(s));
-
-        
-
         Debug.Log("start");
     }
 
