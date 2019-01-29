@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Map
 {
-    public int SegmentOffset { get; set; } = 2;
+    public const int SegmentOffset = 2;
 
     private MapGenerator generator = new MapGenerator();
     private int index = 0;
@@ -29,7 +29,7 @@ public class Map
 
     private int getNodeOffset()
     {
-        return generator.Points * SegmentOffset;
+        return MapGenerator.Points * SegmentOffset;
     }
 
 }

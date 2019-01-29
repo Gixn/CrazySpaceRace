@@ -5,17 +5,17 @@ using Random = System.Random;
 
 public class MapGenerator
 {
-    public float InnerOffset { get; set; } = 0.05f;
-    public float OuterOffset { get; set; } = 0.15f;
-    public float LineWidth { get;set;  } = 0.01f;
-    public int Points { get; set; } = 50;
-    public int MinAngle { get;set;  } = 30;
-    public int MaxAngle { get;set;  } = 90;
-    public int MinLen { get; set; } = 30;
-    public int MaxLen { get; set; } = 100;
-    public int SegmentCount { get; set; } = 10;
+    public const float InnerOffset = 0.05f;
+    public const float OuterOffset  = 0.15f;
+    public const float LineWidth  = 0.01f;
+    public const int Points  = 50;
+    public const int MinAngle  = 30;
+    public const int MaxAngle  = 90;
+    public const int MinLen  = 30;
+    public const int MaxLen  = 100;
+    public const int SegmentCount = 10;
+    public const int Radius = 3;
 
-    private const int Radius = 3;
     private Random random;
     public List<GameObject> Nodes=new List<GameObject>();
     private List<Segment> segments = new List<Segment>();
