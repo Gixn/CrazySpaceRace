@@ -8,7 +8,9 @@ public class MapGenerator
     public const float InnerOffset = 0.05f;
     public const float OuterOffset  = 0.15f;
     public const float LineWidth  = 0.01f;
-    public const int Points  = 50;
+    public const int NodeCount  = 100;
+    public const int VertexCount  = 50;
+
     public const int MinAngle  = 30;
     public const int MaxAngle  = 90;
     public const int MinLen  = 30;
@@ -29,7 +31,7 @@ public class MapGenerator
         
         for (int i = 0; i < SegmentCount; i++)
         {
-            var segment = GenerateSegment();
+            var segment = GenerateSegment(4);
             previous.Append(segment);
             segments.Add(segment);
             previous = segment;
@@ -52,7 +54,7 @@ public class MapGenerator
 
     private void updateNodes()
     {
-        Nodes = segments.SelectMany(s => s.Vertices).ToList();
+        Nodes = segments.SelectMany(s => s.Nodes).ToList();
     }
 
  
@@ -103,18 +105,16 @@ public class MapGenerator
     private Segment GenerateLeftSegment(int angle)
     {
         var segment=new Segment();
-        for (int i = 0; i < Points; i++)
+        for (int i = 0; i < NodeCount; i++)
         {
-            var angleStep = (float) i / Points * angle;
+            var angleStep = (float) i / NodeCount * angle;
             var x = Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius-Radius;
             var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
 
             var pos = new Vector3(x, y, 0);
             var rot=new Vector3(0,0,angleStep);
-            segment.AddVertex(pos,rot);
+            segment.AddNode(pos,rot);
         }
-        var baseLine = GenerateLine(segment.Vertices);
-        baseLine.transform.parent = segment.Parent.transform;
 
         for (int i = 0; i < 4; i++)
         {
@@ -125,9 +125,9 @@ public class MapGenerator
             if (i == 3) radius += OuterOffset;
 
             var vertices = new List<Vector3>();
-            for (int p = 0; p < Points; p++)
+            for (int p = 0; p < VertexCount; p++)
             {
-                var angleStep = (float) p / Points * angle;
+                var angleStep = (float) p / VertexCount * angle;
                 var x = Mathf.Cos(Mathf.Deg2Rad * angleStep) * radius - radius;
                 var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * radius;
                 vertices.Add(new Vector3(x, y, 0));
@@ -137,25 +137,22 @@ public class MapGenerator
             line.transform.parent = segment.Parent.transform;
         }
 
-        baseLine.SetActive(false);
         return segment;
     }
 
     private Segment GenerateRightSegment(int angle)
     {
         var segment=new Segment();
-        for (int i = 0; i < Points; i++)
+        for (int i = 0; i < NodeCount; i++)
         {
-            var angleStep = (float)i / Points * angle;
+            var angleStep = (float)i / NodeCount * angle;
             var x = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius+Radius;
             var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
 
             var pos = new Vector3(x, y, 0);
             var rot=new Vector3(0,0,-angleStep);
-            segment.AddVertex(pos,rot);
+            segment.AddNode(pos,rot);
         }
-        var baseLine = GenerateLine(segment.Vertices);
-        baseLine.transform.parent = segment.Parent.transform;
 
         for (int i = 0; i < 4; i++)
         {
@@ -166,9 +163,9 @@ public class MapGenerator
             if (i == 3) radius += -OuterOffset;
 
             var vertices = new List<Vector3>();
-            for (int p = 0; p < Points; p++)
+            for (int p = 0; p < VertexCount; p++)
             {
-                var angleStep = (float) p / Points * angle;
+                var angleStep = (float) p / VertexCount * angle;
                 var x = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * radius + radius;
                 var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * radius;
                 vertices.Add(new Vector3(x, y, 0));
@@ -178,76 +175,23 @@ public class MapGenerator
             line.parent = segment.Parent.transform;
         }
 
-        baseLine.SetActive(false);
         return segment;
     }
 
     private Segment GenerateUpSegment(int angle)
     {
         var segment=new Segment();
-        for (int i = 0; i < Points; i++)
+        for (int i = 0; i < NodeCount; i++)
         {
-            var angleStep = (float)i / Points * angle;
+            var angleStep = (float)i / NodeCount * angle;
             var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
             var y = Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius-Radius;
 
             var pos=new Vector3(0,x,y);
             var rot=new Vector3(-angleStep,0,0);
-            segment.AddVertex(pos,rot);
+            segment.AddNode(pos,rot);
         }
-        var baseLine = GenerateLine(segment.Vertices);
-        baseLine.transform.parent = segment.Parent.transform;
 
-        InstantiateWithOffset(baseLine,segment);
-
-        baseLine.SetActive(false);
-        return segment;
-    }
-
-    private Segment GenerateDownSegment(int angle)
-    {
-        var segment=new Segment();
-        for (int i = 0; i < Points; i++)
-        {
-            var angleStep = (float)i / Points * angle;
-            var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
-            var y = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius+Radius;
-
-            var pos=new Vector3(0,x,y);
-            var rot=new Vector3(angleStep,0,0);
-            segment.AddVertex(pos,rot);
-        }
-        var baseLine = GenerateLine(segment.Vertices);
-        baseLine.transform.parent = segment.Parent.transform;
-
-        InstantiateWithOffset(baseLine,segment);
-
-        baseLine.SetActive(false);
-        return segment;
-    }
-
-    private Segment GenerateStraightSegment(int length)
-    {
-        var segment=new Segment();
-        for (int i = 0; i < Points; i++)
-        {
-            var y = (float)i/Points*length/100;
-            var pos=new Vector3(0,  y, 0);
-            var rot=new Vector3(0,0,0);
-            segment.AddVertex(pos,rot);
-        }
-        var baseLine = GenerateLine(segment.Vertices);
-        baseLine.transform.parent = segment.Parent.transform;
-
-        InstantiateWithOffset(baseLine,segment);
-
-        baseLine.SetActive(false);
-
-        return segment;
-    }
-
-    private void InstantiateWithOffset(GameObject baseLine,Segment segment)
-    {
         for (int i = 0; i < 4; i++)
         {
             float offset = 0;
@@ -256,22 +200,93 @@ public class MapGenerator
             if (i == 2) offset = InnerOffset;
             if (i == 3) offset = OuterOffset;
 
-            var line = Object.Instantiate(baseLine).transform;
+            var vertices = new List<Vector3>();
+            for (int p = 0; p < VertexCount; p++)
+            {
+                var angleStep = (float)p / VertexCount * angle;
+                var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
+                var y = Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius-Radius;
+                vertices.Add(new Vector3(0,x,y));
+            }
+            var line = GenerateLine(vertices).transform;
             line.localPosition=new Vector3(offset,0,0);
             line.parent = segment.Parent.transform;
         }
+        return segment;
     }
 
-    private GameObject GenerateLine(List<GameObject> vertices)
+    private Segment GenerateDownSegment(int angle)
     {
-        return GenerateLine(vertices.ConvertAll(obj => obj.transform.position));
+        var segment=new Segment();
+        for (int i = 0; i < NodeCount; i++)
+        {
+            var angleStep = (float)i / NodeCount * angle;
+            var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
+            var y = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius+Radius;
+
+            var pos=new Vector3(0,x,y);
+            var rot=new Vector3(angleStep,0,0);
+            segment.AddNode(pos,rot);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            float offset = 0;
+            if (i == 0) offset = -OuterOffset;
+            if (i == 1) offset = -InnerOffset;
+            if (i == 2) offset = InnerOffset;
+            if (i == 3) offset = OuterOffset;
+
+            var vertices = new List<Vector3>();
+            for (int p = 0; p < VertexCount; p++)
+            {
+                var angleStep = (float)p / VertexCount * angle;
+                var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
+                var y = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius+Radius;
+                vertices.Add(new Vector3(0,x,y));
+            }
+            var line = GenerateLine(vertices).transform;
+            line.localPosition=new Vector3(offset,0,0);
+            line.parent = segment.Parent.transform;
+        }
+        return segment;
+    }
+
+    private Segment GenerateStraightSegment(int length)
+    {
+        var segment=new Segment();
+        for (int i = 0; i < NodeCount; i++)
+        {
+            var y = (float)i/NodeCount*length/100;
+            var pos=new Vector3(0,  y, 0);
+            var rot=new Vector3(0,0,0);
+            segment.AddNode(pos,rot);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            float offset = 0;
+            if (i == 0) offset = -OuterOffset;
+            if (i == 1) offset = -InnerOffset;
+            if (i == 2) offset = InnerOffset;
+            if (i == 3) offset = OuterOffset;
+
+            var vertices = new List<Vector3>();
+            for (int p = 0; p < VertexCount; p++)
+            {
+                var y = (float)p/VertexCount*length/100;
+                vertices.Add(new Vector3(0,y,0));
+            }
+            var line = GenerateLine(vertices).transform;
+            line.localPosition=new Vector3(offset,0,0);
+            line.parent = segment.Parent.transform;
+        }
+        return segment;
     }
 
     private GameObject GenerateLine(List<Vector3> vertices)
     {
         var lineObject = new GameObject("Line");
         var line = lineObject.AddComponent<LineRenderer>();
-        line.positionCount = Points;
+        line.positionCount = VertexCount;
         line.SetPositions(vertices.ToArray());
         line.startWidth = LineWidth;
         line.endWidth = LineWidth;

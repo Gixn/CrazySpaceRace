@@ -17,9 +17,13 @@ public class Map
         return generator.Nodes[index + getNodeOffset() + offset];
     }
 
+    public void next(int skip=0)
+    {
+        index += skip+1;
+    }
+
     public void Update()
     {
-        index += 1;
         if (index % getNodeOffset() == 0)
         {
             generator.UpdateSegments(SegmentOffset);
@@ -29,7 +33,7 @@ public class Map
 
     private int getNodeOffset()
     {
-        return MapGenerator.Points * SegmentOffset;
+        return MapGenerator.NodeCount * SegmentOffset;
     }
 
 }
