@@ -21,18 +21,13 @@ public class MapGenerator
     public List<GameObject> Nodes=new List<GameObject>();
     public List<Segment> Segments = new List<Segment>();
 
-
-    public void GenerateSegments(int seed)
+    public MapGenerator(Random random)
     {
-        if (seed<0)
-        {
-            random=new Random();
-        }
-        else
-        {
-            random = new Random(seed);
-        }
+        this.random = random;
+    }
 
+    public void GenerateSegments()
+    {
         Segment previous = GenerateSegment(0);
         Segments.Add(previous);
         

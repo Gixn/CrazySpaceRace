@@ -4,11 +4,12 @@ public class GameManager : MonoBehaviour
 {
     public GameObject player;
 
-    private Map map=new Map();
+    private Map map=new Map(0);
     void Start()
     {
         player = Instantiate(player);
-        map.Generate(-1);
+        map.GenerateMap();
+        map.PlaceRandomObjects(GameObject.CreatePrimitive(PrimitiveType.Cube),300);
     }
 
     // Update is called once per frame
