@@ -862,6 +862,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 9018156442169018818, guid: ee5256d0a48c648da8a4fb7dac78b63a, type: 3}
+  wall: {fileID: 7881381802291981366, guid: 60a0039ae4740452396a806d10abe8de, type: 3}
+  boost: {fileID: 7881381802291981366, guid: 275888c9429ac49718dca183a66d7d04, type: 3}
 --- !u!1 &1213507755
 GameObject:
   m_ObjectHideFlags: 0

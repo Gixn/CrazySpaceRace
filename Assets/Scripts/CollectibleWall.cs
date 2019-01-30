@@ -4,15 +4,10 @@ using UnityEngine.Networking;
 public class CollectibleWall : MonoBehaviour {
         
     void OnTriggerEnter(Collider other) {
-        //only apply collision logic on server, sync events to clients
-        if (!NetworkServer.active) {
-            return;
-        }
-
-        var player = other.GetComponent<PlayerLogic>();
+        var player = other.GetComponent<PlayerLogic2>();
 
         //collided with player
-        if (player != null) {
+        if (player != null /* and player local */) {
             player.actionWall();
             Destroy(gameObject);
         }

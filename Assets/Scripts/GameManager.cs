@@ -11,9 +11,14 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     public GameObject wall;
     public GameObject boost;
 
+    private int nodeOffset = 100;
+
     private Map map;
+    
     void Start()
     {      
+
+  
         var touchDetector = GameObject.Find ("Main Camera").GetComponent<TouchDetector>();
         touchDetector.TouchDelegate = this;
         
@@ -25,7 +30,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         map=new Map(-1,objects);
         vehicle = player.transform.GetChild(0).gameObject;
 
-        parentScaledLaneOffset = Map.LaneOffset / player.transform.localScale.x;
+        parentScaledLaneOffset = Segment.LaneOffset / player.transform.localScale.x;
         
         map.GenerateMap();
      
@@ -33,17 +38,18 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        player.transform.position = map.getNode(100).transform.position;
-        player.transform.rotation = map.getNode(100).transform.rotation;
+    void Update() {
+        player.transform.position = map.GetNode(nodeOffset).transform.position;
+        player.transform.rotation = map.GetNode(nodeOffset).transform.rotation;
         
-        map.next(5);
+        map.Next(5);
     }
 
     // touch callback functions
     public void OnSwipeUp(){
         Debug.Log("Swipe Up");
+        
+        nodeOffset += 100;
     }
 
     public void OnTouchLeftHalf(){
@@ -51,17 +57,19 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         
         if (actualLineOffset > -parentScaledLaneOffset) {
             actualLineOffset -= parentScaledLaneOffset;
-
+            
             vehicle.transform.localPosition = new Vector3(actualLineOffset,0,0);
         }
     }
 
     public void OnTouchRightHalf(){
         Debug.Log("Touch Right Side");
+        
         if (actualLineOffset < parentScaledLaneOffset) {
             actualLineOffset += parentScaledLaneOffset;
             
             vehicle.transform.localPosition = new Vector3(actualLineOffset,0,0);
-        }    
+        }
     }
+    
 }

@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.Networking;
 
 public class PlayerLogic2 : NetworkBehaviour {
+    private GameObject vehicle;
+
     void Start() {
         Camera.main.transform.parent = transform;
         Camera.main.transform.localPosition = new Vector3(0,-10f,-5f);
@@ -10,4 +12,11 @@ public class PlayerLogic2 : NetworkBehaviour {
     }
 
 
+    public void actionWall() {
+        
+    }
+    
+    public void actionBoost() {
+        
+    }
 }
