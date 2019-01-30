@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 
     private Map map=new Map();
     void Start()
-    {
+    {      
         player = Instantiate(player);
         map.Generate(-1);
     }
