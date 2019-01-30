@@ -8,27 +8,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         player = Instantiate(player);
-        map.Generate(0);
+        map.Generate(-1);
     }
 
     // Update is called once per frame
     void Update()
     {
+        player.transform.position = map.getNode(100).transform.position;
+        player.transform.rotation = map.getNode(100).transform.rotation;
 
-        //TODO: fix speed
-        //nodes are unevenly distributed which results in different speeds
-        //solution could be to use the angle*multiplier for the position calculation
-        //for the straight use the circumference depending on the radius as reference
-        //and to skip a increasing/decreasing amount of nodes
-
-        player.transform.position = map.getNode().transform.position;
-        player.transform.rotation = map.getNode().transform.rotation;
-//
-//        float step = 0.1f * Time.deltaTime;
-//        player.transform.position=Vector3.MoveTowards(map.getNode().transform.position,player.transform.position, step);
-//        player.transform.rotation=Quaternion.RotateTowards(map.getNode().transform.rotation,player.transform.rotation, step);
-
-        map.next(3);
-        map.Update();
+        map.next(5);
     }
 }

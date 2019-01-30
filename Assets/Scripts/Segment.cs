@@ -15,7 +15,8 @@ public class Segment
 
     public void AddNode(Vector3 pos, Vector3 rot)
     {
-        var node = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//        var node = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        var node = new GameObject();
         node.transform.localScale=new Vector3(0.05f,0.05f,0.05f);
         node.transform.localPosition = pos;
         node.transform.localRotation = Quaternion.Euler(rot);

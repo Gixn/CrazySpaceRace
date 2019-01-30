@@ -8,53 +8,73 @@ public class MapGenerator
     public const float InnerOffset = 0.05f;
     public const float OuterOffset  = 0.15f;
     public const float LineWidth  = 0.01f;
-    public const int NodeCount  = 100;
-    public const int VertexCount  = 50;
+    public const int NodeMultiplier  = 10;
+    public const int VertexMultiplier  = 2;
 
     public const int MinAngle  = 30;
     public const int MaxAngle  = 90;
-    public const int MinLen  = 30;
-    public const int MaxLen  = 100;
-    public const int SegmentCount = 10;
+
+    public const int SegmentCount = 30;
     public const int Radius = 3;
 
     private Random random;
     public List<GameObject> Nodes=new List<GameObject>();
-    private List<Segment> segments = new List<Segment>();
+    public List<Segment> Segments = new List<Segment>();
 
 
     public void GenerateSegments(int seed)
     {
-        random=new Random(seed);
-        Segment previous = GenerateSegment();
-        segments.Add(previous);
+        if (seed<0)
+        {
+            random=new Random();
+        }
+        else
+        {
+            random = new Random(seed);
+        }
+
+        Segment previous = GenerateSegment(0);
+        Segments.Add(previous);
         
         for (int i = 0; i < SegmentCount; i++)
         {
-            var segment = GenerateSegment(4);
+            var segment = GenerateSegment();
             previous.Append(segment);
-            segments.Add(segment);
+            Segments.Add(segment);
             previous = segment;
         }
         updateNodes();
     }
 
-    public void UpdateSegments(int segmentCount)
+
+    public void AddSegments(int count = 1)
     {
-        for (int i = 0; i < segmentCount; i++)
+        for (int i = 0; i < count; i++)
         {
             var segment = GenerateSegment();
-            segments[segments.Count-1].Append(segment);
-            segments.Add(segment);
-            segments[0].Destroy();
-            segments.RemoveAt(0);
+            Segments[Segments.Count-1].Append(segment);
+            Segments.Add(segment);
         }
         updateNodes();
     }
 
+    public int RemoveSegments(int count = 1)
+    {
+        var removedNodes = 0;
+        for (int i = 0; i < count; i++)
+        {
+            removedNodes += Segments[0].Nodes.Count;
+            Segments[0].Destroy();
+            Segments.RemoveAt(0);
+        }
+        updateNodes();
+
+        return removedNodes;
+    }
+
     private void updateNodes()
     {
-        Nodes = segments.SelectMany(s => s.Nodes).ToList();
+        Nodes = Segments.SelectMany(s => s.Nodes).ToList();
     }
 
  
@@ -63,7 +83,6 @@ public class MapGenerator
     {
         Segment segment=null;
 
-        var length = random.Next(MinLen, MaxLen);
         var angle = random.Next(MinAngle,MaxAngle);
 
         if (type == -1)
@@ -73,29 +92,29 @@ public class MapGenerator
 
         switch (type)
         {
-            case 0: //right
+            case 0:
             {
-                segment = GenerateRightSegment(angle);
+                segment = GenerateStraightSegment(angle);
             }
                 break;
-            case 1: //left
+            case 1:
             {
                 segment = GenerateLeftSegment(angle);
             }
                 break;
-            case 2: //up
+            case 2:
+            {
+                segment = GenerateRightSegment(angle);
+            }
+                break;
+            case 3:
             {
                 segment = GenerateUpSegment(angle);
             }
                 break;
-            case 3: //down
+            case 4:
             {
                 segment = GenerateDownSegment(angle);
-            }
-                break;
-            case 4: //straight
-            {
-                segment = GenerateStraightSegment(length);
             }
                 break;
         }
@@ -105,9 +124,9 @@ public class MapGenerator
     private Segment GenerateLeftSegment(int angle)
     {
         var segment=new Segment();
-        for (int i = 0; i < NodeCount; i++)
+        for (int i = 0; i < angle*NodeMultiplier; i++)
         {
-            var angleStep = (float) i / NodeCount * angle;
+            var angleStep = (float)i / NodeMultiplier;
             var x = Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius-Radius;
             var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
 
@@ -125,9 +144,9 @@ public class MapGenerator
             if (i == 3) radius += OuterOffset;
 
             var vertices = new List<Vector3>();
-            for (int p = 0; p < VertexCount; p++)
+            for (int p = 0; p <= angle*VertexMultiplier; p++)
             {
-                var angleStep = (float) p / VertexCount * angle;
+                var angleStep = (float)p / VertexMultiplier;
                 var x = Mathf.Cos(Mathf.Deg2Rad * angleStep) * radius - radius;
                 var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * radius;
                 vertices.Add(new Vector3(x, y, 0));
@@ -143,9 +162,9 @@ public class MapGenerator
     private Segment GenerateRightSegment(int angle)
     {
         var segment=new Segment();
-        for (int i = 0; i < NodeCount; i++)
+        for (int i = 0; i < angle*NodeMultiplier; i++)
         {
-            var angleStep = (float)i / NodeCount * angle;
+            var angleStep = (float)i / NodeMultiplier;
             var x = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius+Radius;
             var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
 
@@ -163,9 +182,9 @@ public class MapGenerator
             if (i == 3) radius += -OuterOffset;
 
             var vertices = new List<Vector3>();
-            for (int p = 0; p < VertexCount; p++)
+            for (int p = 0; p <= angle*VertexMultiplier; p++)
             {
-                var angleStep = (float) p / VertexCount * angle;
+                var angleStep = (float)p / VertexMultiplier;
                 var x = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * radius + radius;
                 var y = Mathf.Sin(Mathf.Deg2Rad * angleStep) * radius;
                 vertices.Add(new Vector3(x, y, 0));
@@ -181,9 +200,9 @@ public class MapGenerator
     private Segment GenerateUpSegment(int angle)
     {
         var segment=new Segment();
-        for (int i = 0; i < NodeCount; i++)
+        for (int i = 0; i < angle*NodeMultiplier; i++)
         {
-            var angleStep = (float)i / NodeCount * angle;
+            var angleStep = (float)i / NodeMultiplier;
             var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
             var y = Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius-Radius;
 
@@ -201,9 +220,9 @@ public class MapGenerator
             if (i == 3) offset = OuterOffset;
 
             var vertices = new List<Vector3>();
-            for (int p = 0; p < VertexCount; p++)
+            for (int p = 0; p <= angle*VertexMultiplier; p++)
             {
-                var angleStep = (float)p / VertexCount * angle;
+                var angleStep = (float)p / VertexMultiplier;
                 var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
                 var y = Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius-Radius;
                 vertices.Add(new Vector3(0,x,y));
@@ -218,9 +237,9 @@ public class MapGenerator
     private Segment GenerateDownSegment(int angle)
     {
         var segment=new Segment();
-        for (int i = 0; i < NodeCount; i++)
+        for (int i = 0; i < angle*NodeMultiplier; i++)
         {
-            var angleStep = (float)i / NodeCount * angle;
+            var angleStep = (float)i / NodeMultiplier;
             var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
             var y = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius+Radius;
 
@@ -237,9 +256,9 @@ public class MapGenerator
             if (i == 3) offset = OuterOffset;
 
             var vertices = new List<Vector3>();
-            for (int p = 0; p < VertexCount; p++)
+            for (int p = 0; p <= angle*VertexMultiplier; p++)
             {
-                var angleStep = (float)p / VertexCount * angle;
+                var angleStep = (float)p / VertexMultiplier;
                 var x = Mathf.Sin(Mathf.Deg2Rad * angleStep) * Radius;
                 var y = -Mathf.Cos(Mathf.Deg2Rad * angleStep) * Radius+Radius;
                 vertices.Add(new Vector3(0,x,y));
@@ -251,12 +270,16 @@ public class MapGenerator
         return segment;
     }
 
-    private Segment GenerateStraightSegment(int length)
+    private Segment GenerateStraightSegment(int angle)
     {
+        var length = angle;
+        var circumference = Radius * 2 * Mathf.PI;
+        var step=circumference / 360;
+
         var segment=new Segment();
-        for (int i = 0; i < NodeCount; i++)
+        for (int i = 0; i < length*NodeMultiplier; i++)
         {
-            var y = (float)i/NodeCount*length/100;
+            var y = (float)i/NodeMultiplier*step;
             var pos=new Vector3(0,  y, 0);
             var rot=new Vector3(0,0,0);
             segment.AddNode(pos,rot);
@@ -270,9 +293,9 @@ public class MapGenerator
             if (i == 3) offset = OuterOffset;
 
             var vertices = new List<Vector3>();
-            for (int p = 0; p < VertexCount; p++)
+            for (int p = 0; p <= length*VertexMultiplier; p++)
             {
-                var y = (float)p/VertexCount*length/100;
+                var y = (float)p/VertexMultiplier*step;
                 vertices.Add(new Vector3(0,y,0));
             }
             var line = GenerateLine(vertices).transform;
@@ -286,7 +309,7 @@ public class MapGenerator
     {
         var lineObject = new GameObject("Line");
         var line = lineObject.AddComponent<LineRenderer>();
-        line.positionCount = VertexCount;
+        line.positionCount = vertices.Count;
         line.SetPositions(vertices.ToArray());
         line.startWidth = LineWidth;
         line.endWidth = LineWidth;
