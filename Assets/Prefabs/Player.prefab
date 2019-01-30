@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7209501959946160893}
   - component: {fileID: 9001070637809910458}
   - component: {fileID: 5316599936114595127}
-  - component: {fileID: 7647337026684759494}
+  - component: {fileID: 1841107172736611592}
   m_Layer: 0
   m_Name: Vehicle
   m_TagString: Untagged
@@ -53,7 +53,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367011514457043754}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -164,18 +164,22 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &7647337026684759494
-MonoBehaviour:
+--- !u!54 &1841107172736611592
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367011514457043754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f33e8bf5b32f402b82e8ff3d4583520f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &9018156442169018818
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +191,8 @@ GameObject:
   - component: {fileID: 4108447031936628233}
   - component: {fileID: 8996413738668111049}
   - component: {fileID: 3064087133471289228}
-  - component: {fileID: 2681196529605585202}
+  - component: {fileID: 5993982956756731780}
+  - component: {fileID: 2628957551573679825}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -255,16 +260,50 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2681196529605585202
-BoxCollider:
+--- !u!114 &5993982956756731780
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9018156442169018818}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &2628957551573679825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018156442169018818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33e8bf5b32f402b82e8ff3d4583520f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentScaledLaneOffset: 0
+  actualLineOffset: 0

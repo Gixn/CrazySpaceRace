@@ -4,11 +4,11 @@ using UnityEngine.Networking;
 public class CollectibleWall : MonoBehaviour {
         
     void OnTriggerEnter(Collider other) {
-        var player = other.GetComponent<PlayerLogic2>();
+        var playerLogic = other.transform.parent.gameObject.GetComponent<PlayerLogic2>();
 
         //collided with player
-        if (player != null /* and player local */) {
-            player.actionWall();
+        if (playerLogic != null /* and player local */) {
+            playerLogic.actionWall();
             Destroy(gameObject);
         }
     }
