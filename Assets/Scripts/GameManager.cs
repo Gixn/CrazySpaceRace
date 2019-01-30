@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 
     private Map map=new Map(0);
     void Start()
-    {
+    {      
         player = Instantiate(player);
         map.GenerateMap();
         map.PlaceRandomObjects(GameObject.CreatePrimitive(PrimitiveType.Cube),300);
