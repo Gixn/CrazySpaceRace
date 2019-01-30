@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 {
@@ -7,21 +8,29 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     
     private float parentScaledLaneOffset = 0f;    
     private float actualLineOffset = 0f;
+    public GameObject wall;
+    public GameObject boost;
 
-    private Map map=new Map(0);
+    private Map map;
     void Start()
     {      
         var touchDetector = GameObject.Find ("Main Camera").GetComponent<TouchDetector>();
         touchDetector.TouchDelegate = this;
         
         player = Instantiate(player);
+        var objects = new List<GameObject>();
+        objects.Add(wall);
+        objects.Add(boost);
+
+        map=new Map(-1,objects);
         vehicle = player.transform.GetChild(0).gameObject;
 
         parentScaledLaneOffset = Map.LaneOffset / player.transform.localScale.x;
         
         map.GenerateMap();
-        map.PlaceRandomObjects(GameObject.CreatePrimitive(PrimitiveType.Cube),300);
-     }
+     
+
+    }
 
     // Update is called once per frame
     void Update()
