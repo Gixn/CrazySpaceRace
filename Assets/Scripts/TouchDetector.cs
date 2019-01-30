@@ -94,7 +94,7 @@ public class TouchDetector : MonoBehaviour {
 
     //////////////////////////////////CALLBACK FUNCTIONS/////////////////////////////    
     void OnSwipeUp() {
-        Debug.Log("Swipe Up");
+        //Debug.Log("Swipe Up");
         TouchDelegate.OnSwipeUp();
     }
 
@@ -111,16 +111,16 @@ public class TouchDetector : MonoBehaviour {
     }
 
     void OnTouch() {
-        Debug.Log("Simple Touch");
+        //Debug.Log("Simple Touch");
     }
     
     void OnTouchLeftHalf() {
-        Debug.Log("Touch Left Side");
+        //Debug.Log("Touch Left Side");
         TouchDelegate.OnTouchLeftHalf();
     }
     
     void OnTouchRightHalf() {
-        Debug.Log("Touch Right Side");
+        //Debug.Log("Touch Right Side");
         TouchDelegate.OnTouchRightHalf();
     }
 }

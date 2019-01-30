@@ -535,6 +535,7 @@ GameObject:
   - component: {fileID: 624598147}
   - component: {fileID: 624598146}
   - component: {fileID: 624598145}
+  - component: {fileID: 624598150}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -622,6 +623,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &624598150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624598144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80ff5a60620d4d5cb2d1c421021be137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectSwipeOnlyAfterRelease: 1
+  SWIPE_THRESHOLD: 20
 --- !u!1 &816515508
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,7 +861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f059633a40f46ab9b2b176f0415ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1000013099511678, guid: 01548ebb7112a45dfb9814b3455ab198, type: 3}
+  player: {fileID: 9018156442169018818, guid: ee5256d0a48c648da8a4fb7dac78b63a, type: 3}
 --- !u!1 &1213507755
 GameObject:
   m_ObjectHideFlags: 0
