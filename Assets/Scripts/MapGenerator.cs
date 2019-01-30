@@ -14,7 +14,7 @@ public class MapGenerator
     public const int MinAngle  = 30;
     public const int MaxAngle  = 90;
 
-    public const int SegmentCount = 30;
+    public const int SegmentCount = 5;
     public const int Radius = 3;
 
     private Random random;
@@ -26,7 +26,7 @@ public class MapGenerator
         this.random = random;
     }
 
-    public void GenerateSegments()
+    public List<Segment> GenerateSegments()
     {
         Segment previous = GenerateSegment(0);
         Segments.Add(previous);
@@ -39,18 +39,22 @@ public class MapGenerator
             previous = segment;
         }
         updateNodes();
+        return Segments;
     }
 
 
-    public void AddSegments(int count = 1)
+    public List<Segment> AddSegments(int count = 1)
     {
+        var temp = new List<Segment>();
         for (int i = 0; i < count; i++)
         {
             var segment = GenerateSegment();
             Segments[Segments.Count-1].Append(segment);
             Segments.Add(segment);
+            temp.Add(segment);
         }
         updateNodes();
+        return temp;
     }
 
     public int RemoveSegments(int count = 1)
@@ -118,7 +122,7 @@ public class MapGenerator
 
     private Segment GenerateLeftSegment(int angle)
     {
-        var segment=new Segment();
+        var segment=new Segment(random);
         for (int i = 0; i < angle*NodeMultiplier; i++)
         {
             var angleStep = (float)i / NodeMultiplier;
@@ -156,7 +160,7 @@ public class MapGenerator
 
     private Segment GenerateRightSegment(int angle)
     {
-        var segment=new Segment();
+        var segment=new Segment(random);
         for (int i = 0; i < angle*NodeMultiplier; i++)
         {
             var angleStep = (float)i / NodeMultiplier;
@@ -194,7 +198,7 @@ public class MapGenerator
 
     private Segment GenerateUpSegment(int angle)
     {
-        var segment=new Segment();
+        var segment=new Segment(random);
         for (int i = 0; i < angle*NodeMultiplier; i++)
         {
             var angleStep = (float)i / NodeMultiplier;
@@ -231,7 +235,7 @@ public class MapGenerator
 
     private Segment GenerateDownSegment(int angle)
     {
-        var segment=new Segment();
+        var segment=new Segment(random);
         for (int i = 0; i < angle*NodeMultiplier; i++)
         {
             var angleStep = (float)i / NodeMultiplier;
@@ -271,7 +275,7 @@ public class MapGenerator
         var circumference = Radius * 2 * Mathf.PI;
         var step=circumference / 360;
 
-        var segment=new Segment();
+        var segment=new Segment(random);
         for (int i = 0; i < length*NodeMultiplier; i++)
         {
             var y = (float)i/NodeMultiplier*step;
