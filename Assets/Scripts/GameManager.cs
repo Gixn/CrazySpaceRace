@@ -16,13 +16,15 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     private Map map;
     
     private float currCountdownValue;
-    private float countdownValue = 5;
+    private float cooldownValue = 7;
+    private float currBoostDurationValue;
+    private float boostDurationValue = 3;
 
     private bool boostCooldown = false;
 
     
     void Start() {      
-        var touchDetector = GameObject.Find ("Main Camera").GetComponent<TouchDetector>();
+        var touchDetector = GameObject.Find("Main Camera").GetComponent<TouchDetector>();
         touchDetector.TouchDelegate = this;
         
         player = Instantiate(player);
@@ -34,7 +36,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         
         vehicle = player.transform.GetChild(0).gameObject;
         boostTime = player.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
-        boostTime.text = countdownValue.ToString();
+        boostTime.text = cooldownValue.ToString();
         playerLogic = player.GetComponent<PlayerLogic>();
         
         playerLogic.parentScaledLaneOffset = Segment.LaneOffset / player.transform.localScale.x;
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         Debug.Log("Swipe Up");
         if (!boostCooldown) {
             playerLogic.nodeOffset += 100;
-            StartCoroutine(StartCountdown(countdownValue,boostTime));
+            StartCoroutine(StartCooldownCountdown(cooldownValue,boostTime));
         }
        
     }
@@ -82,19 +84,36 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     
     
     // boost timer
-    private IEnumerator StartCountdown(float countdownValue, TextMesh textMash)
+    private IEnumerator StartBoostCountdown(float boostDurationValue)
     {
-        currCountdownValue = countdownValue;
+        
+        playerLogic.boostActive = true;
+        while (currBoostDurationValue > 0)
+        {
+            //ToDo: fly faster!
+
+            yield return new WaitForSeconds(1.0f);
+            currBoostDurationValue--;
+        }
+        playerLogic.boostActive = false;
+    }
+    
+    private IEnumerator StartCooldownCountdown(float cooldownValue, TextMesh textMash)
+    {
+        currCountdownValue = cooldownValue;
         boostCooldown = true;
         while (currCountdownValue > 0)
         {
             Debug.Log("Countdown: " + currCountdownValue);
             textMash.text = currCountdownValue.ToString();
+            
             yield return new WaitForSeconds(1.0f);
             currCountdownValue--;
         }
         textMash.text = "ready!";
         boostCooldown = false;
     }
+    
+   
 
 }

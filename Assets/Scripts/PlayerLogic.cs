@@ -7,6 +7,8 @@ public class PlayerLogic : NetworkBehaviour{
     public float actualLineOffset = 0f;
     public int nodeOffset = 100;
     
+    public bool boostActive = false;
+
     void Start() {
         Camera.main.transform.parent = transform;
         Camera.main.transform.localPosition = new Vector3(0,-10f,-5f);
@@ -16,11 +18,20 @@ public class PlayerLogic : NetworkBehaviour{
 
     public void actionWall()
     {
-        nodeOffset -= 100;
+        if (boostActive) {
+            nodeOffset -= 50;
+        } else {
+            nodeOffset -= 100;
+        }
+        
     }
     
     public void actionBoost() {
-        nodeOffset += 100;
+        if (boostActive) {
+            nodeOffset += 50;
+        } else {
+            nodeOffset += 100;
+        }
     }
     
     
