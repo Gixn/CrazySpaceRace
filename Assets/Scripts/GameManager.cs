@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     private Map map;
     private PlayerLogic playerLogic;
 
-    private const int spawnPosition = 100;
-    private const int blackHolePosition = 500;
+    private const int spawnPosition = 1000;
+    private const int blackHolePosition = 2000;
     private int speed = 5;
 
     void Start() {      
@@ -34,20 +34,36 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         var objects = new List<GameObject>();
         objects.Add(wall);
         objects.Add(boost);
-        map = new Map(-1,objects);
+        map = new Map(0,objects);
         map.GenerateMap();
     }
 
     // Update is called once per frame
     void Update()
     {
-        player.transform.position = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.position;
-        player.transform.rotation = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.rotation;
-        
-        blackHole.transform.position =  map.GetNode(blackHolePosition).transform.position;
-        blackHole.transform.rotation =  map.GetNode(blackHolePosition).transform.rotation;
+        if (playerLogic.nodeOffset<-spawnPosition)
+        {
+            gameOver();
+        }
+        else if (playerLogic.nodeOffset>=blackHolePosition)
+        {
+            gameOver();
+        }
+        else
+        {
+            player.transform.position = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.position;
+            player.transform.rotation = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.rotation;
 
-        map.Next(speed);
+            blackHole.transform.position =  map.GetNode(blackHolePosition).transform.position;
+            blackHole.transform.rotation =  map.GetNode(blackHolePosition).transform.rotation;
+
+            map.Next(speed);
+        }
+    }
+
+    private void gameOver()
+    {
+        Debug.Log("Game Over");
     }
 
     // touch callback functions

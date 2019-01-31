@@ -5,7 +5,7 @@ using Random = System.Random;
 public class Map
 {
 
-    public const int SafetyOffsetStart = 500;
+    public const int SafetyOffsetStart = 1000;
     public const int SafetyOffsetEnd = 1000;
 
     private MapGenerator generator;
