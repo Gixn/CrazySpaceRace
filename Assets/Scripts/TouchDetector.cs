@@ -99,15 +99,17 @@ public class TouchDetector : MonoBehaviour {
     }
 
     void OnSwipeDown() {
-        Debug.Log("Swipe Down");
+        //Debug.Log("Swipe Down");
     }
 
     void OnSwipeLeft() {
-        Debug.Log("Swipe Left");
+        // Debug.Log("Swipe Left");
+        TouchDelegate.OnTouchLeftHalf();
     }
 
     void OnSwipeRight() {
-        Debug.Log("Swipe Right");
+        //Debug.Log("Swipe Right");
+        TouchDelegate.OnTouchRightHalf();
     }
 
     void OnTouch() {

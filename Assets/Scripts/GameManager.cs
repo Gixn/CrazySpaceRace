@@ -1,16 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 {
     public GameObject player;
     private GameObject vehicle;
-    private PlayerLogic2 playerLogic;
+    private TextMesh boostTime;
+    
+    private PlayerLogic playerLogic;
     
     public GameObject wall;
     public GameObject boost;
-   
+    
     private Map map;
+    
+    private float currCountdownValue;
+    private float countdownValue = 5;
+
+    private bool boostCooldown = false;
+
     
     void Start() {      
         var touchDetector = GameObject.Find ("Main Camera").GetComponent<TouchDetector>();
@@ -24,7 +33,9 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         map = new Map(-1,objects);
         
         vehicle = player.transform.GetChild(0).gameObject;
-        playerLogic = player.GetComponent<PlayerLogic2>();
+        boostTime = player.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
+        boostTime.text = countdownValue.ToString();
+        playerLogic = player.GetComponent<PlayerLogic>();
         
         playerLogic.parentScaledLaneOffset = Segment.LaneOffset / player.transform.localScale.x;
         
@@ -42,8 +53,11 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     // touch callback functions
     public void OnSwipeUp(){
         Debug.Log("Swipe Up");
-        
-        playerLogic.nodeOffset += 100;
+        if (!boostCooldown) {
+            playerLogic.nodeOffset += 100;
+            StartCoroutine(StartCountdown(countdownValue,boostTime));
+        }
+       
     }
 
     public void OnTouchLeftHalf(){
@@ -64,6 +78,23 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
             
             vehicle.transform.localPosition = new Vector3(playerLogic.actualLineOffset,0,0);
         }
+    }
+    
+    
+    // boost timer
+    private IEnumerator StartCountdown(float countdownValue, TextMesh textMash)
+    {
+        currCountdownValue = countdownValue;
+        boostCooldown = true;
+        while (currCountdownValue > 0)
+        {
+            Debug.Log("Countdown: " + currCountdownValue);
+            textMash.text = currCountdownValue.ToString();
+            yield return new WaitForSeconds(1.0f);
+            currCountdownValue--;
+        }
+        textMash.text = "ready!";
+        boostCooldown = false;
     }
 
 }
