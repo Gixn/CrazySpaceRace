@@ -7,11 +7,12 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     public GameObject player;
     private GameObject vehicle;
     private TextMesh boostTime;
-    
     private PlayerLogic playerLogic;
     
     public GameObject wall;
     public GameObject boost;
+
+    public GameObject blackHole;
     
     private Map map;
     
@@ -27,17 +28,18 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         var touchDetector = GameObject.Find("Main Camera").GetComponent<TouchDetector>();
         touchDetector.TouchDelegate = this;
         
-        player = Instantiate(player);
         var objects = new List<GameObject>();
         objects.Add(wall);
         objects.Add(boost);
-        
         map = new Map(-1,objects);
         
+        player = Instantiate(player);
         vehicle = player.transform.GetChild(0).gameObject;
         boostTime = player.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
         boostTime.text = cooldownValue.ToString();
         playerLogic = player.GetComponent<PlayerLogic>();
+
+        blackHole = Instantiate(blackHole);
         
         playerLogic.parentScaledLaneOffset = Segment.LaneOffset / player.transform.localScale.x;
         
@@ -49,6 +51,9 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         player.transform.position = map.GetNode(playerLogic.nodeOffset).transform.position;
         player.transform.rotation = map.GetNode(playerLogic.nodeOffset).transform.rotation;
         
+        blackHole.transform.position =  map.GetNode(playerLogic.nodeOffset+200).transform.position;
+        blackHole.transform.rotation =  map.GetNode(playerLogic.nodeOffset+200).transform.rotation;
+
         map.Next(5);
     }
 
