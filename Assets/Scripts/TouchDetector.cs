@@ -43,6 +43,19 @@ public class TouchDetector : MonoBehaviour {
                 checkSwipe();
             }
         }
+        
+        // additional key support
+        if (Input.GetKeyDown("up")){
+            // print("up key was pressed");
+            TouchDelegate.OnSwipeUp();
+        }else if (Input.GetKeyDown("left")){
+            // print("left key was pressed");
+            TouchDelegate.OnTouchLeftHalf();
+        }else if (Input.GetKeyDown("right")){
+            // print("right key was pressed");
+            TouchDelegate.OnTouchRightHalf();
+        
+        }
 
     }
 
