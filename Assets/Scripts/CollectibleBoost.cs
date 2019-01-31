@@ -9,7 +9,7 @@ public class CollectibleBoost : MonoBehaviour {
 
         //collided with player
         if (playerLogic != null) {
-            playerLogic.actionBoost();
+            playerLogic.ActionBoost();
             Destroy(gameObject);
         }
     }

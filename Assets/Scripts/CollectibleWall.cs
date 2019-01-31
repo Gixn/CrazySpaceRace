@@ -8,7 +8,7 @@ public class CollectibleWall : MonoBehaviour {
 
         //collided with player
         if (playerLogic != null /* and player local */) {
-            playerLogic.actionWall();
+            playerLogic.ActionWall();
             Destroy(gameObject);
         }
     }

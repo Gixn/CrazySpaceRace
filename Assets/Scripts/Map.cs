@@ -6,7 +6,7 @@ public class Map
 {
 
     public const int SafetyOffsetStart = 500;
-    public const int SafetyOffsetEnd = 500;
+    public const int SafetyOffsetEnd = 1000;
 
     private MapGenerator generator;
     private Random random;
