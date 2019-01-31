@@ -15,6 +15,9 @@ public class PlayerLogic : NetworkBehaviour{
         Camera.main.transform.localRotation = Quaternion.Euler(-80,0,0);
     }
 
+    void Update(){
+     
+    }
 
     public void actionWall()
     {

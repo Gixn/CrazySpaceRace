@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     public void OnSwipeUp(){
         Debug.Log("Swipe Up");
         if (!boostCooldown) {
-            playerLogic.nodeOffset += 100;
+            StartCoroutine(StartBoostCountdown(boostDurationValue));
             StartCoroutine(StartCooldownCountdown(cooldownValue,boostTime));
         }
        
@@ -85,12 +85,12 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     
     // boost timer
     private IEnumerator StartBoostCountdown(float boostDurationValue)
-    {
-        
+    {     
         playerLogic.boostActive = true;
         while (currBoostDurationValue > 0)
         {
-            //ToDo: fly faster!
+            //ToDo: fly faster! - workt nicht!
+            //playerLogic.nodeOffset += 50;
 
             yield return new WaitForSeconds(1.0f);
             currBoostDurationValue--;
