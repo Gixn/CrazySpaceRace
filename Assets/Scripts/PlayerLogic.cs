@@ -9,6 +9,7 @@ public class PlayerLogic : NetworkBehaviour{
     
     public bool boostActive = false;
     public GameObject vehicle;
+    public ParticleSystem particleSystem;
 
     private bool boostCooldown = false;
 
@@ -17,18 +18,20 @@ public class PlayerLogic : NetworkBehaviour{
     private float cooldownValue = 7;
     private float currBoostDurationValue;
     private float boostDurationValue = 3;
+    private float boostPSmin = 0;
+    private float boostPSnormal = 2;
+    private float boostPSmax = 20;
 
     private TextMesh boostTime;
 
     private const int maxWallSpeed = 20;
     private const int maxBoostSpeed = 20;
+    private const int boostMultiplicator = 2;
 
     void Start() {
         Camera.main.transform.parent = transform;
         Camera.main.transform.localPosition = new Vector3(0,-10f,-5f);
         Camera.main.transform.localRotation = Quaternion.Euler(-80,0,0);
-
-        vehicle = transform.GetChild(0).gameObject;
 
         boostTime = GetComponentInChildren(typeof(TextMesh)) as TextMesh;
         boostTime.text = cooldownValue.ToString();
@@ -48,29 +51,43 @@ public class PlayerLogic : NetworkBehaviour{
     private IEnumerator doWallAction()
     {
         int counter = maxWallSpeed;
-
+        if (boostActive) {
+            counter = maxWallSpeed * boostMultiplicator;
+        }
+        
+        var emission = particleSystem.emission;
+        emission.rateOverTime = boostPSmin;
+        
         while (counter>0)
         {
             nodeOffset -= counter;
             counter -= 1;
             yield return new WaitForSeconds(0.02f);
         }
+        emission.rateOverTime = boostPSnormal;
     }
-    
-    public void ActionBoost() {
+
+    public void ActionBoost()
+    {
         StartCoroutine(doBoostAction());
     }
 
-    private IEnumerator doBoostAction()
-    {
+    private IEnumerator doBoostAction() {
         int counter = maxBoostSpeed;
+        if (boostActive) {
+            counter = maxBoostSpeed * boostMultiplicator;
+        }
 
-        while (counter>0)
-        {
+        var emission = particleSystem.emission;
+        emission.rateOverTime = boostPSmax;
+        
+        while (counter>0) {
             nodeOffset += counter;
             counter -= 1;
             yield return new WaitForSeconds(0.02f);
         }
+        
+        emission.rateOverTime = boostPSnormal;
     }
 
     public void MoveLeft()
@@ -91,8 +108,7 @@ public class PlayerLogic : NetworkBehaviour{
         }
     }
 
-    public void Boost()
-    {
+    public void Boost() {
         if (!boostCooldown) {
             StartCoroutine(StartBoostCountdown(boostDurationValue));
             StartCoroutine(StartCooldownCountdown(cooldownValue,boostTime));

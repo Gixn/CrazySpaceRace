@@ -120,37 +120,6 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
---- !u!1 &8607517169047586278
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6381942613170542265}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6381942613170542265
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8607517169047586278}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2488281649351736494}
-  m_Father: {fileID: 1093830745774740657}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9018156442169018818
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +249,8 @@ MonoBehaviour:
   actualLineOffset: 0
   nodeOffset: 100
   boostActive: 0
+  vehicle: {fileID: 1093830745774557609}
+  particleSystem: {fileID: 2488281649365891564}
 --- !u!1001 &1093830745774536783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,7 +260,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111078, guid: b271505711828fd4e9719f1b97a0922a, type: 3}
       propertyPath: m_Name
-      value: SpaceShuttle_01
+      value: vehicle
       objectReference: {fileID: 0}
     - target: {fileID: 486654, guid: b271505711828fd4e9719f1b97a0922a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -366,7 +337,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6381942613170542265}
+    m_TransformParent: {fileID: 1093830745774740657}
     m_Modifications:
     - target: {fileID: 100006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_Name
@@ -390,11 +361,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -402,7 +373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -418,15 +389,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState
@@ -446,7 +417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: SizeModule.y.minMaxState
@@ -475,6 +446,18 @@ PrefabInstance:
     - target: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: SizeModule.curve.minScalar
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
+      propertyPath: lengthInSec
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 19800002, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState
@@ -510,9 +493,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ce1748fb29d14e9088a544f7c2330c4, type: 3}
---- !u!4 &2488281649351736494 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400006, guid: 2ce1748fb29d14e9088a544f7c2330c4,
+--- !u!198 &2488281649365891564 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19800004, guid: 2ce1748fb29d14e9088a544f7c2330c4,
     type: 3}
   m_PrefabInstance: {fileID: 2488281649351861800}
   m_PrefabAsset: {fileID: 0}

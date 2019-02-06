@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657856, g: 0.49641234, b: 0.57481724, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -794,7 +794,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1181792476}
-  - component: {fileID: 1181792475}
   - component: {fileID: 1181792477}
   - component: {fileID: 1181792478}
   m_Layer: 0
@@ -804,23 +803,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1181792475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1181792474}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cb135a465d384a538c3f012b85611e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectibleWallPrefab: {fileID: 7881381802291981366, guid: 60a0039ae4740452396a806d10abe8de,
-    type: 3}
-  collectibleBoostPrefab: {fileID: 7881381802291981366, guid: 275888c9429ac49718dca183a66d7d04,
-    type: 3}
-  gameWorld: {fileID: 0}
 --- !u!4 &1181792476
 Transform:
   m_ObjectHideFlags: 0
@@ -864,7 +846,9 @@ MonoBehaviour:
   player: {fileID: 9018156442169018818, guid: ee5256d0a48c648da8a4fb7dac78b63a, type: 3}
   wall: {fileID: 7881381802291981366, guid: 60a0039ae4740452396a806d10abe8de, type: 3}
   boost: {fileID: 7881381802291981366, guid: 275888c9429ac49718dca183a66d7d04, type: 3}
-  blackHole: {fileID: 4906379579258070253, guid: d168f31a8bc554f35bb850e085d6254c,
+  endGameFront: {fileID: 4906379579258070253, guid: d168f31a8bc554f35bb850e085d6254c,
+    type: 3}
+  endGameBack: {fileID: 1071593427905055260, guid: 9cf2cdb31aa9b4bc6a083239eacaae6d,
     type: 3}
 --- !u!1 &1213507755
 GameObject:

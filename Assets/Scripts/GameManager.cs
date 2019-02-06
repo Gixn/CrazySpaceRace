@@ -6,21 +6,40 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     public GameObject player;
     public GameObject wall;
     public GameObject boost;
-    public GameObject blackHole;
+    public GameObject endGameFront;
+    public GameObject endGameBack;
     
     private Map map;
     private PlayerLogic playerLogic;
 
+    private ParticleSystem endGameBackPS1;
+    private ParticleSystem endGameBackPS2;
+    private ParticleSystem endGameBackPS3;
+
     private const int spawnPosition = 1000;
-    private const int blackHolePosition = 2000;
+    private const int endGameFrontPosition = 2000;
+    private const int endGameBackPosition = -1000;
+
     private int speed = 5;
 
     void Start() {      
         setupControls();
         buildMap();
         player = Instantiate(player);
-        blackHole = Instantiate(blackHole);
+        endGameFront = Instantiate(endGameFront);
+        endGameBack = Instantiate(endGameBack);
+        setupGameEndPSs(); 
+        
         playerLogic = player.GetComponent<PlayerLogic>();
+    }
+
+    private void setupGameEndPSs()
+    {
+        endGameBackPS1 = endGameBack.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
+        endGameBackPS1.transform.localPosition = endGameBackPS1.transform.localPosition + new Vector3(Segment.LaneOffset/endGameBack.transform.localScale.x, 0, 0);
+        endGameBackPS2 = endGameBack.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
+        endGameBackPS2.transform.localPosition = endGameBackPS2.transform.localPosition + new Vector3(-Segment.LaneOffset/endGameBack.transform.localScale.x, 0, 0);
+        endGameBackPS1 = endGameBack.transform.GetChild(2).gameObject.GetComponent<ParticleSystem>();
     }
 
     private void setupControls()
@@ -41,11 +60,11 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     // Update is called once per frame
     void Update()
     {
-        if (playerLogic.nodeOffset<-spawnPosition)
+        if (playerLogic.nodeOffset<endGameBackPosition)
         {
-            gameOver();
+            playerLogic.nodeOffset = 1000;
         }
-        else if (playerLogic.nodeOffset>=blackHolePosition)
+        else if (playerLogic.nodeOffset>=endGameFrontPosition)
         {
             gameOver();
         }
@@ -54,8 +73,12 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
             player.transform.position = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.position;
             player.transform.rotation = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.rotation;
 
-            blackHole.transform.position =  map.GetNode(blackHolePosition).transform.position;
-            blackHole.transform.rotation =  map.GetNode(blackHolePosition).transform.rotation;
+            endGameFront.transform.position =  map.GetNode(endGameFrontPosition).transform.position;
+            endGameFront.transform.rotation =  map.GetNode(endGameFrontPosition).transform.rotation;
+            
+            endGameBack.transform.position =  map.GetNode(spawnPosition+endGameBackPosition).transform.position;
+            endGameBack.transform.rotation =  map.GetNode(spawnPosition+endGameBackPosition).transform.rotation;
+
 
             map.Next(speed);
         }
