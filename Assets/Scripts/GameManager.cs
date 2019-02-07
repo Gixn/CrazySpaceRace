@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour, ITouchDetectorDelegate
@@ -13,11 +14,12 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     private PlayerLogic playerLogic;
 
     private const int spawnPosition = 1000;
-    private const int endGameFrontPosition = 2000;
+    private int endGameFrontPosition = 2000;
     private const int endGameBackPosition = 0;
     private bool gameOver = false;
 
-    private int speed = 5;
+    private int speed = 3;
+    private float speedChangeInterval = 10.0f;
 
     void Start() {      
         setupControls();
@@ -28,6 +30,16 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         setupGameEndPSs(); 
         
         playerLogic = player.GetComponent<PlayerLogic>();
+        StartCoroutine(changeDifficulty());
+    }
+
+    private IEnumerator changeDifficulty()
+    {
+        while (true)
+        {
+            speed+=1;
+            yield return new WaitForSeconds(speedChangeInterval);
+        }
     }
 
     private void setupGameEndPSs()
