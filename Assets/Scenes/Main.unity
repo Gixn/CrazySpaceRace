@@ -536,6 +536,7 @@ GameObject:
   - component: {fileID: 624598146}
   - component: {fileID: 624598145}
   - component: {fileID: 624598150}
+  - component: {fileID: 624598151}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -637,6 +638,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectSwipeOnlyAfterRelease: 1
   SWIPE_THRESHOLD: 20
+--- !u!45 &624598151
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624598144}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 3963fe4aa404fe749bf9fc5a5cc08e3c, type: 2}
 --- !u!1 &816515508
 GameObject:
   m_ObjectHideFlags: 0
