@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 
     private const int spawnPosition = 1000;
     private const int endGameFrontPosition = 2000;
-    private const int endGameBackPosition = 100;
+    private const int endGameBackPosition = 0;
     private bool gameOver = false;
 
     private int speed = 5;

@@ -7,16 +7,16 @@ public class PlayerLogic : NetworkBehaviour{
     public float actualLineOffset = 0f;
     public int nodeOffset = 100;
     
-    public bool boostActive = false;
+
     public GameObject vehicle;
     public ParticleSystem particleSystem;
 
     private bool boostCooldown = false;
-
+    private bool boostActive = false;
 
     private float currCountdownValue;
     private float cooldownValue = 7;
-    private float currBoostDurationValue;
+    private float currBoostDurationValue=3;
     private float boostDurationValue = 3;
     private float boostPSmin = 0;
     private float boostPSnormal = 2;
@@ -26,7 +26,7 @@ public class PlayerLogic : NetworkBehaviour{
 
     private const int maxWallSpeed = 20;
     private const int maxBoostSpeed = 20;
-    private const int boostMultiplicator = 2;
+    private const float boostMultiplicator = 2f;
 
     void Start() {
         Camera.main.transform.parent = transform;
@@ -52,7 +52,7 @@ public class PlayerLogic : NetworkBehaviour{
     {
         int counter = maxWallSpeed;
         if (boostActive) {
-            counter = maxWallSpeed * boostMultiplicator;
+            counter = (int)(maxWallSpeed * boostMultiplicator);
         }
         
         var emission = particleSystem.emission;
@@ -74,9 +74,6 @@ public class PlayerLogic : NetworkBehaviour{
 
     private IEnumerator doBoostAction() {
         int counter = maxBoostSpeed;
-        if (boostActive) {
-            counter = maxBoostSpeed * boostMultiplicator;
-        }
 
         var emission = particleSystem.emission;
         emission.rateOverTime = boostPSmax;
@@ -109,7 +106,9 @@ public class PlayerLogic : NetworkBehaviour{
     }
 
     public void Boost() {
-        if (!boostCooldown) {
+        if (!boostCooldown)
+        {
+            StartCoroutine(doBoostAction());
             StartCoroutine(StartBoostCountdown(boostDurationValue));
             StartCoroutine(StartCooldownCountdown(cooldownValue,boostTime));
         }
@@ -122,12 +121,11 @@ public class PlayerLogic : NetworkBehaviour{
         boostActive = true;
         while (currBoostDurationValue > 0)
         {
-
-            nodeOffset += 50;
-
             yield return new WaitForSeconds(1.0f);
             currBoostDurationValue--;
         }
+
+        currBoostDurationValue = boostDurationValue;
         boostActive = false;
     }
 
