@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 
     private const int spawnPosition = 1000;
     private const int endGameFrontPosition = 2000;
-    private const int endGameBackPosition = -1000;
+    private const int endGameBackPosition = 100;
+    private bool gameOver = false;
 
     private int speed = 5;
 
@@ -55,33 +56,30 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     // Update is called once per frame
     void Update()
     {
-        if (playerLogic.nodeOffset<endGameBackPosition)
+        if (gameOver) return;
+
+        var playerPos = spawnPosition + playerLogic.nodeOffset;
+        if (playerPos<=endGameBackPosition)
         {
-            playerLogic.nodeOffset = 1000;
+            playerLogic.nodeOffset = endGameFrontPosition-spawnPosition-100;
         }
-        else if (playerLogic.nodeOffset>=endGameFrontPosition)
+        else if (playerPos>=endGameFrontPosition)
         {
-            gameOver();
+            gameOver = true;
         }
         else
         {
-            player.transform.position = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.position;
-            player.transform.rotation = map.GetNode(spawnPosition+playerLogic.nodeOffset).transform.rotation;
+            map.Next(speed);
+
+            player.transform.position = map.GetNode(playerPos).transform.position;
+            player.transform.rotation = map.GetNode(playerPos).transform.rotation;
 
             endGameFront.transform.position =  map.GetNode(endGameFrontPosition).transform.position;
             endGameFront.transform.rotation =  map.GetNode(endGameFrontPosition).transform.rotation;
             
-            endGameBack.transform.position =  map.GetNode(spawnPosition+endGameBackPosition).transform.position;
-            endGameBack.transform.rotation =  map.GetNode(spawnPosition+endGameBackPosition).transform.rotation;
-
-
-            map.Next(speed);
+            endGameBack.transform.position =  map.GetNode(endGameBackPosition).transform.position;
+            endGameBack.transform.rotation =  map.GetNode(endGameBackPosition).transform.rotation;
         }
-    }
-
-    private void gameOver()
-    {
-        Debug.Log("Game Over");
     }
 
     // touch callback functions
