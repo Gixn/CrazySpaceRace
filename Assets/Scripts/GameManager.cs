@@ -12,10 +12,6 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     private Map map;
     private PlayerLogic playerLogic;
 
-    private ParticleSystem endGameBackPS1;
-    private ParticleSystem endGameBackPS2;
-    private ParticleSystem endGameBackPS3;
-
     private const int spawnPosition = 1000;
     private const int endGameFrontPosition = 2000;
     private const int endGameBackPosition = -1000;
@@ -35,11 +31,10 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 
     private void setupGameEndPSs()
     {
-        endGameBackPS1 = endGameBack.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
+        var endGameBackPS1 = endGameBack.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
         endGameBackPS1.transform.localPosition = endGameBackPS1.transform.localPosition + new Vector3(Segment.LaneOffset/endGameBack.transform.localScale.x, 0, 0);
-        endGameBackPS2 = endGameBack.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
+        var endGameBackPS2 = endGameBack.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
         endGameBackPS2.transform.localPosition = endGameBackPS2.transform.localPosition + new Vector3(-Segment.LaneOffset/endGameBack.transform.localScale.x, 0, 0);
-        endGameBackPS1 = endGameBack.transform.GetChild(2).gameObject.GetComponent<ParticleSystem>();
     }
 
     private void setupControls()

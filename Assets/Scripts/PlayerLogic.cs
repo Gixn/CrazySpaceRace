@@ -40,7 +40,7 @@ public class PlayerLogic : NetworkBehaviour{
     }
 
     void Update(){
-     
+    
     }
 
     public void ActionWall()

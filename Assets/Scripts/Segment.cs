@@ -33,7 +33,7 @@ public class Segment
     }
     public void PlaceObject(GameObject obj,int nodeIndex,int lane)
     {
-        var scale=new Vector3(0.05f,0.05f,0.05f);
+        var scale=new Vector3(0.08f,0.08f,0.08f);
         var node = Nodes[nodeIndex].transform;
         var clone = Object.Instantiate(obj, Parent.transform, true);
 
