@@ -69,8 +69,6 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         }
         else
         {
-            map.Next(speed);
-
             player.transform.position = map.GetNode(playerPos).transform.position;
             player.transform.rotation = map.GetNode(playerPos).transform.rotation;
 
@@ -79,6 +77,8 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
             
             endGameBack.transform.position =  map.GetNode(endGameBackPosition).transform.position;
             endGameBack.transform.rotation =  map.GetNode(endGameBackPosition).transform.rotation;
+
+            map.Next(speed);
         }
     }
 

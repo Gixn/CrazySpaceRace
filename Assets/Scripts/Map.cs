@@ -5,8 +5,8 @@ using Random = System.Random;
 public class Map
 {
 
-    public const int SafetyOffsetStart = 2000;
-    public const int SafetyOffsetEnd = 2000;
+    public const int SafetyOffsetStart = 1000;
+    public const int SafetyOffsetEnd = 1000;
 
     private MapGenerator generator;
     private Random random;
@@ -35,24 +35,22 @@ public class Map
 
     public GameObject GetNode(int offset=0)
     {
+        var lastNode = generator.Nodes.Count - 1;
+        if (nodeIndex+offset>lastNode-SafetyOffsetEnd)
+        {
+            placeObjects(generator.AddSegments(10));
+        }
+        var firstNodeOfSecondSegment = generator.Segments[0].Nodes.Count;
+        if (nodeIndex>firstNodeOfSecondSegment+SafetyOffsetStart)
+        {
+            nodeIndex -= generator.RemoveSegments(1);
+        }
         return generator.Nodes[nodeIndex  + offset];
     }
 
     public void Next(int skip=0)
     {
         nodeIndex += skip+1;
-
-        var distanceToEnd = generator.Nodes.Count - nodeIndex;
-        if (distanceToEnd<SafetyOffsetEnd)
-        {
-            placeObjects(generator.AddSegments(10));
-        }
-
-        var firstSegment = generator.Segments[0].Nodes.Count;
-        if (nodeIndex>firstSegment+SafetyOffsetStart)
-        {
-            nodeIndex -= generator.RemoveSegments(1);
-        }
     }
 
     private void placeObjects(List<Segment> segments)
