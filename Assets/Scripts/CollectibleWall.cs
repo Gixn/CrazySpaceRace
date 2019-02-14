@@ -4,12 +4,12 @@ using UnityEngine.Networking;
 public class CollectibleWall : MonoBehaviour
 {
     private ParticleSystem WallAnimation;
+    private AudioSource audioSource;
     
     private void OnEnable()
     {
         WallAnimation = transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
-        /*WallAnimation.Play();
-        Invoke("PauseParticleSystem", 1.9f);*/
+        audioSource = transform.GetComponent<AudioSource>();
     }
 
     void PauseParticleSystem()
@@ -24,6 +24,7 @@ public class CollectibleWall : MonoBehaviour
         if (playerLogic != null /* and player local */) {
             playerLogic.ActionWall();
             WallAnimation.Play();
+            audioSource.Play();
             GetComponent<Collider>().enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
             Destroy(gameObject,3);
