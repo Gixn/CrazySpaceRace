@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 {
@@ -10,6 +11,14 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     public GameObject endGameFront;
     public GameObject endGameBack;
     
+    // ui elements
+    public Text scoreText;
+    public Text text1;
+    public Text text2;
+    public Button button1;
+    public Button button2;
+    
+    
     private Map map;
     private PlayerLogic playerLogic;
 
@@ -18,8 +27,8 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     private const int endGameBackPosition = 0;
     private bool gameOver = false;
 
-    private int speed = 3;
-    private float speedChangeInterval = 10.0f;
+    private int speed = 5;
+    private float speedChangeInterval = 0.03f;
 
     void Start() {      
         setupControls();
@@ -37,7 +46,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     {
         while (true)
         {
-            speed+=1;
+            endGameFrontPosition-=1;
             yield return new WaitForSeconds(speedChangeInterval);
         }
     }
