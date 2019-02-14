@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     void Start() {      
         setupControls();
         buildMap();
+//        scoreText = Instantiate(scoreText);
         player = Instantiate(player);
         endGameFront = Instantiate(endGameFront);
         endGameBack = Instantiate(endGameBack);
@@ -40,6 +41,14 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         
         playerLogic = player.GetComponent<PlayerLogic>();
         StartCoroutine(changeDifficulty());
+    }
+
+    private void Restart()
+    {
+        map.Destroy();
+        buildMap();
+        gameOver = false;
+        speed = 3;
     }
 
     private IEnumerator changeDifficulty()
@@ -74,10 +83,16 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
         map.GenerateMap();
     }
 
+
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (gameOver) return;
+        if (gameOver)
+        {
+            GameOver();
+            return;
+        };
 
         var playerPos = spawnPosition + playerLogic.nodeOffset;
         if (playerPos<=endGameBackPosition)
@@ -101,6 +116,13 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 
             map.Next(speed);
         }
+        scoreText.text = "Score: " + map.GetScore();
+    }
+
+
+    private void GameOver()
+    {
+
     }
 
     // touch callback functions

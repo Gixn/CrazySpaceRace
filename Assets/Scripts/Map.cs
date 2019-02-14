@@ -12,6 +12,7 @@ public class Map
     private Random random;
     private int nodeIndex = 0;
     private List<GameObject> objects;
+    private int score = 0;
 
     public Map(int seed,List<GameObject> objects)
     {
@@ -26,6 +27,12 @@ public class Map
         generator=  new MapGenerator(random);
         this.objects = objects;
 
+    }
+
+    public void Destroy()
+    {
+//        objects.ForEach(Object.Destroy);
+        generator.Segments.ForEach(s=> s.Destroy());
     }
 
     public void GenerateMap()
@@ -48,9 +55,15 @@ public class Map
         return generator.Nodes[nodeIndex  + offset];
     }
 
+    public int GetScore()
+    {
+        return score/20;
+    }
+
     public void Next(int skip=0)
     {
         nodeIndex += skip+1;
+        score += 1;
     }
 
     private void placeObjects(List<Segment> segments)
