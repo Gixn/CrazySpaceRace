@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour, ITouchDetectorDelegate
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
     void Start() {      
         setupControls();
         buildMap();
-//        scoreText = Instantiate(scoreText);
         player = Instantiate(player);
         endGameFront = Instantiate(endGameFront);
         endGameBack = Instantiate(endGameBack);
@@ -45,10 +45,7 @@ public class GameManager : MonoBehaviour, ITouchDetectorDelegate
 
     private void Restart()
     {
-        map.Destroy();
-        buildMap();
-        gameOver = false;
-        speed = 3;
+        SceneManager.LoadScene( SceneManager.GetActiveScene().name );
     }
 
     private IEnumerator changeDifficulty()
